@@ -276,6 +276,36 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
 .info-block p{ font-size:.9rem; margin:0; }
 .form-note{ font-size:.82rem; color: var(--steel); margin-top:-6px; }
 
+.multiselect{ position:relative; }
+.multiselect-toggle{
+  width:100%; text-align:left; padding: 12px 14px; border:1px solid var(--line); border-radius: var(--radius);
+  font-family: var(--font-body); font-size: .95rem; background:#fff; cursor:pointer;
+  display:flex; justify-content:space-between; align-items:center; gap:10px;
+}
+.multiselect-toggle #worktype-summary{ color: var(--steel-light); }
+.multiselect-toggle.has-selection #worktype-summary{ color: var(--ink); }
+.multiselect.open .multiselect-toggle{ outline: 2px solid var(--edge); outline-offset: 1px; border-color: var(--edge); }
+.multiselect-panel{
+  display:none; position:absolute; top:calc(100% + 6px); left:0; right:0;
+  background:#fff; border:1px solid var(--line); border-radius: var(--radius);
+  box-shadow: 0 16px 34px -14px rgba(18,24,28,.3); z-index: 20; padding:6px;
+}
+.multiselect.open .multiselect-panel{ display:block; }
+.ms-option{
+  display:flex; align-items:center; gap:10px; padding:10px 10px; font-size:.92rem;
+  cursor:pointer; border-radius: var(--radius); color: var(--ink);
+}
+.ms-option:hover{ background: var(--bg); }
+.ms-option input{ accent-color: var(--edge); width:16px; height:16px; flex-shrink:0; }
+
+.area-field{ margin-bottom: 20px; }
+.area-field label{ display:block; font-size:.85rem; font-weight:600; margin-bottom:8px; }
+.area-field input{
+  width:100%; padding: 12px 14px; border:1px solid var(--line); border-radius: var(--radius);
+  font-family: var(--font-body); font-size: .95rem; background:#fff;
+}
+.area-field input:focus{ outline: 2px solid var(--edge); outline-offset: 1px; border-color: var(--edge); }
+
 .floatwa{
   position: fixed; bottom: 24px; right: 24px; z-index: 60;
   width: 54px; height: 54px; border-radius: 50%;
@@ -850,19 +880,22 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
           <input type="tel" id="phone" name="phone" required placeholder="+91 xxxxx xxxxx">
         </div>
         <div class="form-field">
-          <label for="worktype">Type of work</label>
-          <select id="worktype" name="worktype" required>
-            <option value="">Select a work type</option>
-            <option value="railing">Glass Railing</option>
-            <option value="tempered">Tempered Glass Works</option>
-            <option value="rooftop">Rooftop Tempered Glass Fitting</option>
-            <option value="other">Not sure / other</option>
-          </select>
+          <label for="worktype-toggle">Type of work</label>
+          <div class="multiselect" id="worktype-multiselect">
+            <button type="button" class="multiselect-toggle" id="worktype-toggle" aria-haspopup="listbox" aria-expanded="false">
+              <span id="worktype-summary">Select work type(s)</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="flex-shrink:0;"><path d="M6 9l6 6 6-6" stroke="#5B6B73" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="multiselect-panel" id="worktype-panel" role="listbox">
+              <label class="ms-option"><input type="checkbox" class="worktype-check" value="railing" data-label="Glass Railing"> Glass Railing</label>
+              <label class="ms-option"><input type="checkbox" class="worktype-check" value="tempered" data-label="Tempered Glass Works"> Tempered Glass Works</label>
+              <label class="ms-option"><input type="checkbox" class="worktype-check" value="rooftop" data-label="Rooftop Tempered Glass Fitting"> Rooftop Tempered Glass Fitting</label>
+              <label class="ms-option"><input type="checkbox" class="worktype-check" value="other" data-label="Not sure / other"> Not sure / other</label>
+            </div>
+          </div>
+          <p class="form-note" id="worktype-error" style="display:none; color:#B3261E; margin-top:8px;">Please select at least one type of work.</p>
         </div>
-        <div class="form-field">
-          <label for="area">Approx. area (sqft)</label>
-          <input type="text" id="area" name="area" placeholder="e.g. 120 sqft">
-        </div>
+        <div id="area-fields-container"></div>
         <div class="form-field">
           <label for="message">Details</label>
           <textarea id="message" name="message" rows="4" placeholder="Location, floor, any specific design in mind..."></textarea>
@@ -972,24 +1005,97 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
+  // Work type multi-select dropdown
+  var msWrap = document.querySelector('#worktype-multiselect');
+  var msToggle = document.querySelector('#worktype-toggle');
+  var msSummary = document.querySelector('#worktype-summary');
+  var msChecks = document.querySelectorAll('.worktype-check');
+  var areaContainer = document.querySelector('#area-fields-container');
+  var worktypeError = document.querySelector('#worktype-error');
+
+  function slugify(v){ return v.replace(/[^a-z0-9]/gi, '-'); }
+
+  function renderAreaFields(){
+    var selected = Array.prototype.filter.call(msChecks, function(c){ return c.checked; });
+    areaContainer.innerHTML = '';
+    selected.forEach(function(c){
+      var wrap = document.createElement('div');
+      wrap.className = 'area-field';
+      var label = document.createElement('label');
+      label.setAttribute('for', 'area-' + slugify(c.value));
+      label.textContent = 'Approx. area — ' + c.getAttribute('data-label') + ' (sqft)';
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.id = 'area-' + slugify(c.value);
+      input.className = 'area-input';
+      input.setAttribute('data-worktype', c.getAttribute('data-label'));
+      input.placeholder = 'e.g. 120 sqft';
+      wrap.appendChild(label);
+      wrap.appendChild(input);
+      areaContainer.appendChild(wrap);
+    });
+  }
+
+  function updateSummary(){
+    var selected = Array.prototype.filter.call(msChecks, function(c){ return c.checked; });
+    if (selected.length === 0) {
+      msSummary.textContent = 'Select work type(s)';
+      msToggle.classList.remove('has-selection');
+    } else {
+      msSummary.textContent = selected.map(function(c){ return c.getAttribute('data-label'); }).join(', ');
+      msToggle.classList.add('has-selection');
+      worktypeError.style.display = 'none';
+    }
+  }
+
+  if (msWrap && msToggle) {
+    msToggle.addEventListener('click', function(e){
+      e.stopPropagation();
+      msWrap.classList.toggle('open');
+      msToggle.setAttribute('aria-expanded', msWrap.classList.contains('open'));
+    });
+    document.addEventListener('click', function(e){
+      if (!msWrap.contains(e.target)) {
+        msWrap.classList.remove('open');
+        msToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    msChecks.forEach(function(c){
+      c.addEventListener('change', function(){
+        updateSummary();
+        renderAreaFields();
+      });
+    });
+  }
+
   var form = document.querySelector('#quote-form');
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      var selected = Array.prototype.filter.call(msChecks, function(c){ return c.checked; });
+      if (selected.length === 0) {
+        worktypeError.style.display = 'block';
+        msWrap.classList.add('open');
+        return;
+      }
+
       var name = document.querySelector('#name').value.trim();
       var phone = document.querySelector('#phone').value.trim();
-      var worktypeSelect = document.querySelector('#worktype');
-      var worktype = worktypeSelect.options[worktypeSelect.selectedIndex].text;
-      var area = document.querySelector('#area').value.trim();
       var message = document.querySelector('#message').value.trim();
 
       var lines = [
         'New quote request — Om Sai Glass website',
         'Name: ' + name,
         'Phone: ' + phone,
-        'Work type: ' + worktype
+        'Work type(s):'
       ];
-      if (area) lines.push('Approx. area: ' + area);
+      selected.forEach(function(c){
+        var label = c.getAttribute('data-label');
+        var input = document.querySelector('#area-' + slugify(c.value));
+        var area = input ? input.value.trim() : '';
+        lines.push('  - ' + label + (area ? ' — ' + area : ' — area not specified'));
+      });
       if (message) lines.push('Details: ' + message);
 
       var text = encodeURIComponent(lines.join('\n'));
@@ -1001,6 +1107,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
       window.open(waUrl, '_blank');
       form.reset();
+      msChecks.forEach(function(c){ c.checked = false; });
+      updateSummary();
+      renderAreaFields();
     });
   }
 });
