@@ -231,9 +231,10 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
 .category-gallery .pane{ aspect-ratio: 1/1; }
 .category-gallery .pane.wide{ grid-column: span 2; aspect-ratio: 16/9; }
 
-.spec-table{ width:100%; border-collapse: collapse; margin-top: 10px; }
+.spec-table{ width:100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
 .spec-table th, .spec-table td{ text-align:left; padding: 12px 10px; border-bottom: 1px solid var(--line); font-size:.92rem; }
 .spec-table th{ font-family: var(--font-mono); text-transform:uppercase; font-size:.72rem; letter-spacing:.06em; color: var(--steel); }
+.spec-table th:first-child, .spec-table td:first-child{ width: 42%; }
 
 .materials-list{ list-style:none; margin: 18px 0 0; padding:0; display:grid; gap:12px; }
 .materials-list li{
