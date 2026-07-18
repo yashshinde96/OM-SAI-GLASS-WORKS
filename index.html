@@ -7,13 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-/* ============================================
-   CLEARLINE GLASS WORKS — design tokens
-   Concept: architectural spec-sheet meets the
-   actual optical signature of tempered glass —
-   the thin teal glint you see along a cut edge.
-   ============================================ */
-
 :root{
   --bg: #F4F7F8;
   --panel: #FFFFFF;
@@ -98,11 +91,13 @@ header.site{
   font-size: 1.25rem;
   display:flex; align-items:center; gap:10px;
 }
-.brand .mark{
-  width: 22px; height: 22px;
-  background: linear-gradient(135deg, #ffffff 0%, #dfeff0 40%, var(--edge) 100%);
-  border: 1px solid var(--edge);
-  transform: rotate(45deg);
+.brand-logo{
+  width: 34px; height: 34px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #fff;
+  border: 1px solid var(--line);
+  flex-shrink: 0;
 }
 .navlinks{
   display:flex; gap: 30px;
@@ -185,16 +180,18 @@ section{ padding: 80px 0; }
 .work-card{
   background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
   overflow:hidden; position: relative; transition: transform .25s ease, box-shadow .25s ease;
+  display: flex; flex-direction: column;
 }
 .work-card:hover{ transform: translateY(-4px); box-shadow: 0 18px 40px -20px rgba(18,24,28,.25); }
 .work-card .pane{ aspect-ratio: 4/3; }
-.work-card .body{ padding: 22px 22px 24px; }
+.work-card .body{ padding: 22px 22px 24px; display:flex; flex-direction:column; flex:1; }
 .work-card .cat{ font-family: var(--font-mono); font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color: var(--edge); margin-bottom:8px; display:block; }
 .work-card h3{ font-size:1.15rem; margin-bottom:8px; }
-.work-card p{ font-size:.9rem; margin-bottom: 14px; }
-.work-card .rate{ display:flex; justify-content:space-between; align-items:center; border-top: 1px solid var(--line); padding-top: 14px; margin-top: 4px; }
-.work-card .rate .price{ font-family: var(--font-mono); font-weight:600; color: var(--ink); }
-.work-card .rate .price small{ color: var(--steel); font-weight:400; }
+.work-card p{ font-size:.9rem; margin-bottom: 0; flex:1; }
+.work-card .card-footer{
+  display:flex; justify-content:flex-end; align-items:center;
+  border-top: 1px solid var(--line); padding-top: 14px; margin-top: 16px;
+}
 .work-card a.more{ font-size:.85rem; font-weight:600; color: var(--ink); display:flex; align-items:center; gap:6px; }
 .work-card a.more:hover{ color: var(--edge); }
 
@@ -230,7 +227,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
 
 .category{ padding: 70px 0; border-bottom: 1px solid var(--line); }
 .category:last-of-type{ border-bottom:none; }
-.category-top{ display:grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 40px; }
+.category-top{ display:grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 40px; align-items: start; }
 .category-gallery{ display:grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
 .category-gallery .pane{ aspect-ratio: 1/1; }
 .category-gallery .pane.wide{ grid-column: span 2; aspect-ratio: 16/9; }
@@ -238,11 +235,14 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
 .spec-table{ width:100%; border-collapse: collapse; margin-top: 10px; }
 .spec-table th, .spec-table td{ text-align:left; padding: 12px 10px; border-bottom: 1px solid var(--line); font-size:.92rem; }
 .spec-table th{ font-family: var(--font-mono); text-transform:uppercase; font-size:.72rem; letter-spacing:.06em; color: var(--steel); }
-.spec-table td.price{ font-family: var(--font-mono); font-weight:600; }
 
-.materials-list{ list-style:none; margin: 18px 0 0; padding:0; display:grid; gap:10px; }
-.materials-list li{ display:flex; justify-content:space-between; font-size:.92rem; border-bottom: 1px dashed var(--line); padding-bottom:8px; }
-.materials-list span.tag{ color: var(--steel); }
+.materials-list{ list-style:none; margin: 18px 0 0; padding:0; display:grid; gap:12px; }
+.materials-list li{
+  display:flex; flex-direction:column; gap:3px;
+  font-size:.92rem; border-bottom: 1px dashed var(--line); padding-bottom:10px;
+}
+.materials-list li span:first-child{ color: var(--ink); font-weight:600; }
+.materials-list span.tag{ color: var(--steel); line-height:1.5; }
 
 .rate-note{ margin-top: 22px; padding: 16px 18px; background: #EEF6F5; border-left: 2px solid var(--edge); font-size: .87rem; color: var(--steel); }
 
@@ -275,11 +275,6 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
 }
 .info-block h4{ font-size:1rem; margin-bottom:4px; }
 .info-block p{ font-size:.9rem; margin:0; }
-.map-box{
-  margin-top: 20px; height: 240px; border:1px dashed var(--line); border-radius: var(--radius);
-  display:flex; align-items:center; justify-content:center; color: var(--steel); font-size:.85rem;
-  background: repeating-linear-gradient(45deg, #fff, #fff 10px, #F4F7F8 10px, #F4F7F8 20px);
-}
 .form-note{ font-size:.82rem; color: var(--steel); margin-top:-6px; }
 
 .floatwa{
@@ -320,7 +315,10 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
 
 <header class="site">
   <div class="wrap nav">
-    <a href="#home" class="brand"><span class="mark"></span>Om Sai Glass</a>
+    <a href="#home" class="brand">
+      <img src="logo-om-sai-glass.png" alt="Om Sai Glass logo" class="brand-logo">
+      Om Sai Glass
+    </a>
     <nav>
       <ul class="navlinks">
         <li><a href="#home">Home</a></li>
@@ -398,7 +396,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
       <p>Om Sai Glass cuts, tempers, and fits every job ourselves — from a single balcony railing to a full rooftop glass structure. That means one point of contact, from measurement to final polish.</p>
       <ul class="about-list">
         <li><span class="dot"></span><div><b>In-house tempering &amp; cutting</b> — no third-party job work, so timelines and quality stay in our control.</div></li>
-        <li><span class="dot"></span><div><b>Site measurement before any quote</b> — rates below are starting points; final pricing follows a free visit.</div></li>
+        <li><span class="dot"></span><div><b>Site measurement before any quote</b> — every job is confirmed after a free visit.</div></li>
         <li><span class="dot"></span><div><b>IS-certified toughened glass</b> — every sheet tested for safety before it leaves the yard.</div></li>
         <li><span class="dot"></span><div><b>Warranty on fittings</b> — SS &amp; aluminium hardware covered for 2 years against defects.</div></li>
       </ul>
@@ -411,7 +409,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
     <div class="section-head">
       <div class="eyebrow">What we do</div>
       <h2>Our works</h2>
-      <p>Three core services, each fitted on-site by our own crew. Rates below are indicative starting prices — full specs and materials are in the <a href="#works" style="color:var(--edge); font-weight:600;">Works section</a> below.</p>
+      <p>Three core services, each fitted on-site by our own crew. Full specs and materials are in the <a href="#works" style="color:var(--edge); font-weight:600;">Works section</a> below.</p>
     </div>
     <div class="works-grid">
       <div class="work-card">
@@ -430,8 +428,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
           <span class="cat">Balcony &amp; Staircase</span>
           <h3>Glass Railing</h3>
           <p>Spider-fit or channel-fit toughened glass railings for balconies, staircases &amp; terraces.</p>
-          <div class="rate">
-            <div class="price mono">₹450–650<small>/sqft*</small></div>
+          <div class="card-footer">
             <a href="#railing" class="more">Details →</a>
           </div>
         </div>
@@ -448,9 +445,8 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
         <div class="body">
           <span class="cat">Partitions &amp; Frontage</span>
           <h3>Toughened Glass Works</h3>
-          <p>Shopfronts, office partitions, table tops &amp; frameless doors in toughened safety glass.</p>
-          <div class="rate">
-            <div class="price mono">₹380–550<small>/sqft*</small></div>
+          <p>Shopfronts, office partitions &amp; frameless doors in toughened safety glass.</p>
+          <div class="card-footer">
             <a href="#tempered" class="more">Details →</a>
           </div>
         </div>
@@ -470,8 +466,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
           <span class="cat">Skylights &amp; Pergola Roofing</span>
           <h3>Rooftop Tempered Fitting</h3>
           <p>Laminated toughened glass roofing for skylights, pergolas &amp; rooftop canopies.</p>
-          <div class="rate">
-            <div class="price mono">₹600–850<small>/sqft*</small></div>
+          <div class="card-footer">
             <a href="#rooftop" class="more">Details →</a>
           </div>
         </div>
@@ -513,8 +508,8 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
 <section class="cta-band">
   <div class="wrap">
     <div>
-      <h2>Have a rough sqft in mind?</h2>
-      <p>Send us the measurements and photos on WhatsApp — we'll give you a ballpark rate the same day.</p>
+      <h2>Have a project in mind?</h2>
+      <p>Send us the measurements and photos on WhatsApp — we'll get back to you the same day.</p>
     </div>
     <a href="https://wa.me/918951514647" class="btn" target="_blank" rel="noopener">Chat on WhatsApp →</a>
   </div>
@@ -525,7 +520,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
   <div class="wrap">
     <div class="eyebrow">Our works</div>
     <h1>Every job, broken down honestly</h1>
-    <p class="lead">Photos, materials and starting rates for each type of work we do. Final pricing depends on site access, design complexity &amp; glass thickness — confirmed after a free site visit.</p>
+    <p class="lead">Photos and materials for each type of work we do. Final specifications depend on site access, design complexity &amp; glass thickness — confirmed after a free site visit.</p>
   </div>
 </section>
 
@@ -538,7 +533,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
         <p>Frameless toughened glass railings fitted with stainless steel spigot or U-channel base fixing — for balconies, staircases, terraces &amp; pool decks. Handrail finish in SS or wood-capped options available.</p>
         <ul class="materials-list">
           <li><span>Glass</span><span class="tag">12mm toughened, clear, laminated or frosted</span></li>
-          <li><span>Fitting hardware</span><span class="tag">SS 304 spigot, Aluminium spigot, Bracket and cover system, Bracket system and Continous profile </span></li>
+          <li><span>Fitting hardware</span><span class="tag">SS 304 spigot, Aluminium spigot, Bracket and cover system, Bracket system and Continous profile</span></li>
           <li><span>Handrail</span><span class="tag">SS handle 40x40mm or 50x50mm and Aluminium handles</span></li>
         </ul>
       </div>
@@ -557,39 +552,27 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
             <text x="40" y="245" font-family="IBM Plex Mono" font-size="12" fill="#5B6B73">Terrace railing — spider-fit, frosted band</text>
           </svg>
         </div>
-        <div class="pane">
+        <div class="pane wide">
           <div class="edge"></div>
-          <svg viewBox="0 0 240 240" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
-            <rect width="240" height="240" fill="#EAF2F2"/>
-            <line x1="60" y1="30" x2="60" y2="210" stroke="#2FBFA3" stroke-width="2"/>
-            <line x1="120" y1="30" x2="120" y2="210" stroke="#2FBFA3" stroke-width="2"/>
-            <line x1="180" y1="30" x2="180" y2="210" stroke="#2FBFA3" stroke-width="2"/>
-            <circle cx="60" cy="30" r="5" fill="#A67C3D"/>
-            <circle cx="120" cy="30" r="5" fill="#A67C3D"/>
-            <circle cx="180" cy="30" r="5" fill="#A67C3D"/>
-            <text x="20" y="228" font-family="IBM Plex Mono" font-size="11" fill="#5B6B73">Spider clamp detail</text>
-          </svg>
-        </div>
-        <div class="pane">
-          <div class="edge"></div>
-          <svg viewBox="0 0 240 240" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
-            <rect width="240" height="240" fill="#EAF2F2"/>
-            <rect x="40" y="60" width="160" height="130" fill="#ffffff" opacity="0.4" stroke="#2FBFA3" stroke-width="2"/>
-            <line x1="40" y1="60" x2="200" y2="60" stroke="#12181C" stroke-width="5"/>
-            <text x="20" y="228" font-family="IBM Plex Mono" font-size="11" fill="#5B6B73">Staircase, U-channel base</text>
+          <svg viewBox="0 0 500 260" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect width="500" height="260" fill="#EAF2F2"/>
+            <rect x="40" y="50" width="420" height="150" fill="#ffffff" opacity="0.35" stroke="#2FBFA3" stroke-width="2"/>
+            <line x1="40" y1="50" x2="460" y2="50" stroke="#12181C" stroke-width="5"/>
+            <rect x="30" y="200" width="440" height="14" fill="#12181C"/>
+            <text x="40" y="238" font-family="IBM Plex Mono" font-size="12" fill="#5B6B73">Staircase railing — U-channel base fixing</text>
           </svg>
         </div>
       </div>
     </div>
     <table class="spec-table">
-      <thead><tr><th>Fitting type</th><th>Glass spec</th><th>Rate (starting)</th></tr></thead>
+      <thead><tr><th>Fitting type</th><th>Glass spec</th></tr></thead>
       <tbody>
-        <tr><td>SS railing </td><td>12mm toughened, clear, tinted, frosted, laminated</td><td class="price">₹550/sqft*</td></tr>
-        <tr><td>Continious profile fitting</td><td>12mm toughened, clear, tinted, frosted, laminated</td><td class="price">₹450/sqft*</td></tr>
-        <tr><td>Aluminium spigot fitting</td><td>12mm toughened, clear, tinted, frosted, laminated</td><td class="price">₹650/sqft*</td></tr>
+        <tr><td>SS railing</td><td>12mm toughened, clear, tinted, frosted, laminated</td></tr>
+        <tr><td>Continious profile fitting</td><td>12mm toughened, clear, tinted, frosted, laminated</td></tr>
+        <tr><td>Aluminium spigot fitting</td><td>12mm toughened, clear, tinted, frosted, laminated</td></tr>
       </tbody>
     </table>
-    <div class="rate-note">*Rates are starting prices for standard clear toughened glass and do not include handrail cost, transport for far sites, or design cutouts. Confirmed after free measurement visit.</div>
+    <div class="rate-note">Final handrail choice, hardware finish, and any design cutouts are confirmed after a free measurement visit.</div>
   </div>
 </section>
 
@@ -617,33 +600,25 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
             <text x="50" y="248" font-family="IBM Plex Mono" font-size="12" fill="#5B6B73">Shopfront — frameless toughened panels</text>
           </svg>
         </div>
-        <div class="pane">
+        <div class="pane wide">
           <div class="edge"></div>
-          <svg viewBox="0 0 240 240" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
-            <rect width="240" height="240" fill="#EAF2F2"/>
-            <rect x="40" y="30" width="160" height="180" fill="#ffffff" opacity="0.35" stroke="#2FBFA3" stroke-width="2"/>
-            <rect x="90" y="105" width="16" height="30" fill="#A67C3D"/>
-            <text x="20" y="228" font-family="IBM Plex Mono" font-size="11" fill="#5B6B73">Patch-fit frameless door</text>
-          </svg>
-        </div>
-        <div class="pane">
-          <div class="edge"></div>
-          <svg viewBox="0 0 240 240" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
-            <rect width="240" height="240" fill="#EAF2F2"/>
-            <ellipse cx="120" cy="120" rx="90" ry="55" fill="#ffffff" opacity="0.4" stroke="#2FBFA3" stroke-width="2"/>
-            <text x="20" y="228" font-family="IBM Plex Mono" font-size="11" fill="#5B6B73">Toughened glass table top</text>
+          <svg viewBox="0 0 500 260" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+            <rect width="500" height="260" fill="#EAF2F2"/>
+            <rect x="60" y="35" width="380" height="195" fill="#ffffff" opacity="0.35" stroke="#2FBFA3" stroke-width="2"/>
+            <rect x="235" y="115" width="18" height="34" fill="#A67C3D"/>
+            <text x="60" y="248" font-family="IBM Plex Mono" font-size="12" fill="#5B6B73">Patch-fit frameless door</text>
           </svg>
         </div>
       </div>
     </div>
     <table class="spec-table">
-      <thead><tr><th>Application</th><th>Glass spec</th><th>Rate (starting)</th></tr></thead>
+      <thead><tr><th>Application</th><th>Glass spec</th></tr></thead>
       <tbody>
-        <tr><td>Office partition (framed/frameless)</td><td>8mm toughened, clear</td><td class="price">₹380/sqft*</td></tr>
-        <tr><td>Frameless door / shopfront</td><td>12mm toughened, clear</td><td class="price">₹550/sqft*</td></tr>
+        <tr><td>Office partition (framed/frameless)</td><td>8mm toughened, clear</td></tr>
+        <tr><td>Frameless door / shopfront</td><td>12mm toughened, clear</td></tr>
       </tbody>
     </table>
-    <div class="rate-note">*Rates exclude aluminium framing (if chosen), floor springs for heavy doors, and frosted film application — quoted separately based on design.</div>
+    <div class="rate-note">Framing, floor springs for heavy doors, and film application are discussed and confirmed on-site.</div>
   </div>
 </section>
 
@@ -697,14 +672,14 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
       </div>
     </div>
     <table class="spec-table">
-      <thead><tr><th>Structure type</th><th>Glass spec</th><th>Rate (starting)</th></tr></thead>
+      <thead><tr><th>Structure type</th><th>Glass spec</th></tr></thead>
       <tbody>
-        <tr><td>Flat skylight (fixed)</td><td>12mm toughened + laminated</td><td class="price">₹700/sqft*</td></tr>
-        <tr><td>Sloped rooftop roofing</td><td>12mm toughened + laminated + UV</td><td class="price">₹850/sqft*</td></tr>
-        <tr><td>Pergola canopy</td><td>10mm toughened + laminated</td><td class="price">₹600/sqft*</td></tr>
+        <tr><td>Flat skylight (fixed)</td><td>12mm toughened + laminated</td></tr>
+        <tr><td>Sloped rooftop roofing</td><td>12mm toughened + laminated + UV</td></tr>
+        <tr><td>Pergola canopy</td><td>10mm toughened + laminated</td></tr>
       </tbody>
     </table>
-    <div class="rate-note">*Rates depend heavily on height/access, structural framing material, and slope. Rooftop jobs always require a site visit before final quote — access and load-bearing checks matter here more than any other work type.</div>
+    <div class="rate-note">Height/access, framing material, and slope are confirmed during a mandatory site visit before work begins.</div>
   </div>
 </section>
 
@@ -712,7 +687,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
   <div class="wrap">
     <div>
       <h2>Not sure which work fits your need?</h2>
-      <p>Send a photo of the space on WhatsApp — we'll suggest the right option and rough rate.</p>
+      <p>Send a photo of the space on WhatsApp — we'll suggest the right option.</p>
     </div>
     <a href="#contact" class="btn">Request a Quote →</a>
   </div>
@@ -850,7 +825,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
   <div class="wrap">
     <div>
       <h2>Like what you see?</h2>
-      <p>Tell us the sqft and we'll work out a starting estimate before the site visit.</p>
+      <p>Tell us about your space and we'll work out the details before the site visit.</p>
     </div>
     <a href="#contact" class="btn">Request a Quote →</a>
   </div>
@@ -861,7 +836,7 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
   <div class="wrap">
     <div class="eyebrow">Contact</div>
     <h1>Get a free site visit &amp; quote</h1>
-    <p class="lead">Fill the form, call, or message on WhatsApp — whichever's fastest for you. For rooftop and railing work, a site visit is how we confirm final pricing.</p>
+    <p class="lead">Fill the form, call, or message on WhatsApp — whichever's fastest for you. For rooftop and railing work, a site visit is how we confirm final specifications.</p>
   </div>
 </section>
 
