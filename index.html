@@ -164,6 +164,8 @@ header.site{
   pointer-events:none;
 }
 .pane .edge{ position:absolute; left:0; top:0; bottom:0; width:3px; background: linear-gradient(180deg, var(--edge), transparent 85%); }
+.pane img{ width:100%; height:100%; object-fit: cover; object-position: center; display:block; }
+.pane.photo::before{ content:none; }
 
 section{ padding: 80px 0; }
 .section-head{ max-width: 640px; margin-bottom: 46px; }
@@ -565,19 +567,9 @@ footer.site{ background: #0F1417; color: #92A0A5; padding: 54px 0 26px; }
         </ul>
       </div>
       <div class="category-gallery">
-        <div class="pane wide">
+        <div class="pane wide photo">
           <div class="edge"></div>
-          <svg viewBox="0 0 500 260" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
-            <rect width="500" height="260" fill="#EAF2F2"/>
-            <line x1="60" y1="40" x2="60" y2="220" stroke="#2FBFA3" stroke-width="2"/>
-            <line x1="140" y1="40" x2="140" y2="220" stroke="#2FBFA3" stroke-width="2"/>
-            <line x1="220" y1="40" x2="220" y2="220" stroke="#2FBFA3" stroke-width="2"/>
-            <line x1="300" y1="40" x2="300" y2="220" stroke="#2FBFA3" stroke-width="2"/>
-            <line x1="380" y1="40" x2="380" y2="220" stroke="#2FBFA3" stroke-width="2"/>
-            <line x1="440" y1="40" x2="440" y2="220" stroke="#2FBFA3" stroke-width="2"/>
-            <line x1="40" y1="40" x2="460" y2="40" stroke="#12181C" stroke-width="5"/>
-            <text x="40" y="245" font-family="IBM Plex Mono" font-size="12" fill="#5B6B73">Terrace railing — spider-fit, frosted band</text>
-          </svg>
+          <img src="railing-terrace-wide.png" alt="Terrace glass railing — frosted decorative band" loading="lazy">
         </div>
         <div class="pane wide">
           <div class="edge"></div>
